@@ -1,0 +1,134 @@
+{
+  "name": "not-qt",
+  "displayName": "Qt Builder",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "not-qt.buildProject",
+        "title": "Qt Builder: Build project"
+      },
+      {
+        "command": "not-qt.buildSelectedProject",
+        "title": "Qt Builder: Build project"
+      },
+      {
+        "command": "qtProjects.refreshEntry",
+        "title": "Refresh",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
+      },
+      {
+        "command": "qtProjects.build",
+        "title": "Build",
+        "icon": {
+          "light": "resources/light/build.svg",
+          "dark": "resources/dark/build.svg"
+        }
+      },
+      {
+        "command": "qtProjects.deploy",
+        "title": "Deploy"      }  
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "when": "explorerResourceIsFolder && resourcePath in ext.qtFolders",
+          "command": "not-qt.buildSelectedProject",
+          "title": "Qt Builder: Build resourcePath",
+          "group": "commands"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "qtProjects.refreshEntry",
+          "when": "view == qtProjects",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "qtProjects.build",
+          "when": "view == qtProjects && viewItem == project",
+          "group": "inline"
+        },
+        {
+          "command": "qtProjects.deploy",
+          "when": "view == qtProjects && viewItem == project"
+        }
+      ]  
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "qtr-creator",
+          "title": "QtR Creator",
+          "icon": "media/not_qt_logo.svg"
+        }
+      ]
+    },
+    "views": {
+      "qtr-creator": [
+        {
+          "id": "qtProjects",
+          "name": "Qt projects",
+          "when": "ext.qtProjects != null",
+          "icon": "media/not_qt_logo.svg",
+          "contextualTitle": "Qt projects explorer"
+        }
+      ]
+    },
+    "problemMatchers": [
+      {
+        "name": "Qt",
+        "owner": "cpp",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": {
+          "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "typescript": "^4.9.3",
+    "@vscode/test-electron": "^2.2.0"
+  }
+}
